@@ -18,7 +18,7 @@ class AuthService {
 
             switch (e.code) {
                 case 'auth/wrong-password':
-                    return { user: null, message: 'Ya existe un usuario registrado con ese email' };
+                    return { user: null, message: 'Credenciales incorrectas, intente de nuevo.' };
 
                 default:
                     return { user: null, message: 'Error al comunicarse con el servidor, intente de nuevo mas tarde' };
