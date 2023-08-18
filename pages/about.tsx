@@ -30,17 +30,17 @@ export default function about() {
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
         >
-            <div className='big-image-container w-1/2 h-full'></div>
-            <div className='about-us-text-section-container w-1/2 mx-10 my-10 text-right flex justify-end'>
+            <div className='big-image-container lg:w-1/2 h-full'></div>
+            <div className='about-us-text-section-container mx-10 my-10 lg:w-1/2 flex justify-center'>
                 <motion.div
-                    className='text-container w-4/5 text-slate-200'
+                    className='text-container lg:w-4/5 text-slate-200'
                     variants={dropIn}
                     initial='hidden'
                     animate='visible'
                     exit='exit'
                 >
-                    <div className='text-4xl pb-1 font-basketball tracking-widest border-b-4 rounded-md border-b-slate-300'>DE JUGADORES PARA JUGADORES</div>
-                    <div className='my-8 text-xl text-slate-800'>Poner en el mapa a las canchas argentinas y sus jugadores darle mayor visibilidad. <br></br>Todo aquel que quiera practicar el deporte recreativamente va a poder ver las canchas cerca suyo. Y aquel que quiera jugar de forma un poco mas competitiva puede recorrer nuevas canchas y enfrentarse a talentos todavia desconocidos.</div>
+                    <div className='lg:text-4xl text-center text-lg pb-1 font-basketball tracking-widest border-b-4 rounded-md border-b-slate-300'>DE JUGADORES PARA JUGADORES</div>
+                    <div className='my-8 text-xl text-slate-800 p-2 bg-opacity-70 bg-slate-300 lg:bg-transparent lg:bg-opacity-0 rounded-3xl'>Poner en el mapa a las canchas argentinas y sus jugadores darle mayor visibilidad. <br></br>Todo aquel que quiera practicar el deporte recreativamente va a poder ver las canchas cerca suyo. Y aquel que quiera jugar de forma un poco mas competitiva puede recorrer nuevas canchas y enfrentarse a talentos todavia desconocidos.</div>
                 </motion.div>
             </div>
         </motion.div>
