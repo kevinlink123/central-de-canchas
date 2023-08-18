@@ -3,6 +3,7 @@ import Router from 'next/router';
 import React, { FormEvent, useState } from 'react'
 import Modal from '../components/Modal'
 import authService from '../firebase/auth.service'
+import Link from 'next/link';
 
 export default function ingresar() {
 	const [email, setEmail] = useState('');
@@ -36,7 +37,7 @@ export default function ingresar() {
 					<div className='mx-auto text-2xl font-mono'>Central de Canchas</div>
 					<div className='text-center text-sm italic'>Ingrese con sus credenciales</div>
 				</div>
-				<form onSubmit={loginUser} className='form my-2'>
+				<form onSubmit={loginUser} className='form my-10'>
 					<div className='email-input-container flex flex-col w-full relative border-b-2 after:content-[""] after:relative after:block after:h-0.5 after:w-full after:bg-violet-500 after:scale-x-0 after:origin-[0%] after:transition-transform after:duration-500 after:ease-in after:top-0.5 focus-within:border-transparent focus-within:after:scale-x-100'>
 						<input
 							className='border-none outline-none overflow-hidden w-full py-0.5 bg-transparent peer valid:text-green-400 invalid:text-red-400'
@@ -85,7 +86,7 @@ export default function ingresar() {
 					</div>
 				</form>
 				<div className='dont-have-an-account-yet-container text-center mb-10'>
-					Todavía no estás registrado? Hacé <span className='underline text-blue-400 cursor-pointer'>click acá</span>
+					Todavía no estás registrado? Hacé <Link href='/registro'><span className='underline text-blue-400 cursor-pointer'>click acá</span></Link>
 				</div>
 				<AnimatePresence
 					initial={false}
