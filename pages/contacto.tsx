@@ -16,44 +16,44 @@ const instagramIcon = (
     <img
         src="/instagram.png"
         alt="instagram icon"
-        className='h-9 w-9 mr-2'
+        className='h-9 w-9'
     />
 )
 
 export default function contacto() {
     return (
-        <div className='mx-1 flex flex-col justify-center items-center'>
+        <div className='mx-1 h-screen flex flex-col justify-center items-center'>
 
             <div className='contact-info-container my-20'>
                 <div className='text-center'>Creado con cariño por un jugador más</div>
                 <div className='text-center'>Información de contacto:</div>
-                <div className='contacts-container border m-auto flex justify-center items-center w-2/3 flex-wrap'>
-                    <div className='w-1/2 h-20 border flex items-center'>
-                        <div className='ml-2'>{phoneIcon}</div>
-                        <div className='flex flex-col'>
-                            <div className=''>Whatsapp:</div>
+                <div className='contacts-container border m-auto flex justify-center items-center text-center mx-2 lg:mx-0 flex-wrap'>
+                    <div className='w-1/2 h-20 border flex items-center justify-center'>
+                        <div className='flex items-center justify-center'>{phoneIcon}</div>
+                        <div className='w-1/2'>
+                            <div className='font-semibold'>Whatsapp:</div>
                             <div>11-6955-5040</div>
                         </div>
                     </div>
-                    <div className='w-1/2 h-20 border flex items-center'>
-                        <div className='mx-2'>{emailIcon}</div>
-                        <div className='flex flex-col'>
-                            <div className=''>Email:</div>
+                    <div className='w-1/2 h-20 border flex items-center justify-center'>
+                        <div className='flex items-center justify-center'>{emailIcon}</div>
+                        <div className='w-1/2'>
+                            <div className='font-semibold'>Email:</div>
                             <div>cdc@hotmail.com</div>
                         </div>
                     </div>
-                    <div className='w-1/2 h-20 border flex items-center'>
-                        <div className='ml-2'>{instagramIcon}</div>
-                        <div className='flex flex-col'>
-                            <div className=''>Instagram:</div>
-                            <div>XXXXXXXXXX</div>
+                    <div className='w-1/2 h-20 border flex items-center justify-center'>
+                        <div className='flex items-center justify-center'>{instagramIcon}</div>
+                        <div className='w-1/2'>
+                            <div className='font-semibold'>Instagram:</div>
+                            <div>@Central de Canchas</div>
                         </div>
                     </div>
-                    <div className='w-1/2 h-20 border flex items-center'>
-                        <div className='ml-2'>{phoneIcon}</div>
-                        <div className='flex flex-col'>
-                            <div className=''>Whatsapp:</div>
-                            <div>11-6955-5040</div>
+                    <div className='w-1/2 h-20 border flex items-center justify-center'>
+                        <div className='flex items-center justify-center'>{phoneIcon}</div>
+                        <div className='w-1/2'>
+                            <div className='m-auto font-semibold'>Facebook</div>
+                            <div>Central de Canchas</div>
                         </div>
                     </div>
                 </div>
