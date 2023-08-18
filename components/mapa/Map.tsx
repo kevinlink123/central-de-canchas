@@ -134,6 +134,11 @@ class Map extends React.Component<MapProps, MapState> {
     }
 
     enableAddMarkerOnClick(e: React.MouseEvent<HTMLDivElement, MouseEvent>) {
+        if (!this.context.user) {
+            this.openModal('Tenés que estar logueado para registrar nuevas canchas');
+            return;
+        }
+
         if (!this.state.isUserAbleToAddNewMarker) { return }
         this.map.on('mousemove', this.markerFollowsCursor);
         this.map.once('click', this.addMarkerOnClick);
@@ -174,6 +179,12 @@ class Map extends React.Component<MapProps, MapState> {
         const { courtName, address, municipality, province, surfaceType, numberOfHoops, numberOfCourts, rimHeight, rimCondition } = newMarkerData;
         
         const nameOrAddressIsEmpty = courtName === '' || address === '';
+
+        try {
+            
+        } catch (error) {
+            
+        }
 
         if (!this.context.user) {
             this.openModal('Tenés que estar logueado para registrar nuevas canchas');
