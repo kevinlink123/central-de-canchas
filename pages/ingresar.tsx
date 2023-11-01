@@ -30,14 +30,14 @@ export default function ingresar() {
 	}
 
 	return (
-		<div className='main mx-auto h-full z- my-10'>
-			<div className='form-container m-auto flex flex-col justify-between items-center h-5/6 w-2/3 lg:w-1/3 -z-40 bg-slate-100 shadow-xl shadow-slate-400 rounded-3xl'>
+		<div className='main mx-auto h-screen z- my-10'>
+			<div className='form-container m-auto flex flex-col justify-between items-center h-4/6 lg:w-1/3 w-full -z-40 bg-slate-100 shadow-xl shadow-slate-400 rounded-3xl'>
 				<div className='mx-auto w-full text-center mt-10'>
 					<img src='/court-finder-icon-big.jpg' className='rounded-full mx-auto my-4' width={70} />
 					<div className='mx-auto text-2xl font-mono'>Central de Canchas</div>
 					<div className='text-center text-sm italic'>Ingrese con sus credenciales</div>
 				</div>
-				<form onSubmit={loginUser} className='form my-10'>
+				<form onSubmit={loginUser} className='form'>
 					<div className='email-input-container flex flex-col w-full relative border-b-2 after:content-[""] after:relative after:block after:h-0.5 after:w-full after:bg-violet-500 after:scale-x-0 after:origin-[0%] after:transition-transform after:duration-500 after:ease-in after:top-0.5 focus-within:border-transparent focus-within:after:scale-x-100'>
 						<input
 							className='border-none outline-none overflow-hidden w-full py-0.5 bg-transparent peer valid:text-green-400 invalid:text-red-400'
