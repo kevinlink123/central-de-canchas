@@ -1,7 +1,8 @@
 import { getAuth } from "firebase/auth";
-import { addDoc, collection, getDoc, getDocs } from "firebase/firestore";
+import { addDoc, collection, getDoc, doc, getDocs, query, limit, orderBy, startAfter, QueryDocumentSnapshot, DocumentData } from "firebase/firestore";
 import { MarkerDataInterface } from "../types/Map.interface";
 import { app, db } from "./clientApp";
+import { CourtsTableData } from "../types/CourtsData.interface";
 
 class MarkerService {
     auth;
@@ -10,6 +11,7 @@ class MarkerService {
         this.auth = getAuth(app);
     }
 
+    //Add id field to court data
     async registerNewMarker(newMarkerData: MarkerDataInterface) {
         try {
             const docRef = await addDoc(collection(db, 'courts'), newMarkerData);
@@ -21,9 +23,39 @@ class MarkerService {
         }
     }
 
+    async getPaginatedCourtsData(lastCourtCalled: QueryDocumentSnapshot<DocumentData> | '') {
+        const q = query(collection(db, 'courts'), orderBy('courtName'), startAfter(lastCourtCalled), limit(6));
+        
+        const querySnapshot = await getDocs(q);
+
+        const lastcourt = querySnapshot.docs[querySnapshot.docs.length-1];
+        
+        const courtsData = querySnapshot.docs.map((doc) => {
+            const { courtName, address, municipality, province, surfaceType, numberOfHoops, numberOfCourts, rimHeight, rimCondition } = doc.data();
+
+                const singleCourtData = {
+                    courtName,
+                    address,
+                    municipality,
+                    province,
+                    surfaceType,
+                    numberOfHoops,
+                    numberOfCourts,
+                    rimHeight,
+                    rimCondition
+                }
+                return singleCourtData;
+        });
+        return {
+            courtsData: courtsData,
+            lastCourtCalled: lastcourt
+        };
+    }
+
+    //CHANGE NAME TO "getAllCourts"
     async getAllMarkers() {
         try {
-            const querySnapshot = await getDocs(collection(db, 'courts'))
+            const querySnapshot = await getDocs(collection(db, 'courts'));
             const markers: MarkerDataInterface[] = [];
             querySnapshot.forEach((doc) => {
                 const { coordinates, courtName, address, municipality, province, surfaceType, numberOfHoops, numberOfCourts, rimHeight, rimCondition} = doc.data();
