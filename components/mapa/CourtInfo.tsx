@@ -17,12 +17,12 @@ const fadeIn = {
         transition: {
             duration: 1,
             type: 'spring',
-            damping: 25,
+            damping: 500,
             stiffness: 500
         }
     },
     exit: {
-        x: '100vh',
+        x: '',
         opacity: 0
     }
 }
