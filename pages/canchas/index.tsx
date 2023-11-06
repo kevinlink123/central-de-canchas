@@ -7,6 +7,7 @@ import {
 } from "../../types/CourtsData.interface";
 import { v4 as uuidv4 } from 'uuid';
 import { DocumentData, QueryDocumentSnapshot } from "firebase/firestore";
+import { Headers } from "../../constans/tableHeaders.constant";
 
 export default function canchas() {
     const [courtsData, setCourtsData] = useState<CourtsTableData[]>([]);
@@ -72,10 +73,10 @@ export default function canchas() {
             )}
             <div className={`main-grid min-h-full grid grid-rows-[repeat(${courtsData.length + 2},_minmax(0,_1fr))]`}>
                 <div className="headers w-full grid grid-cols-[repeat(9,_minmax(0,_1fr))]">
-                    {headers.map((header) => {
+                    {headers.map((header: string) => {
                         return (
                             <div key={uuidv4()} className="single-header flex justify-center items-center py-1 text-center bg-gray-200 border border-gray-300 font-basketball tracking-widest">
-                                {header}
+                                {Headers[header as keyof typeof Headers]}
                             </div>
                         );
                     })}
