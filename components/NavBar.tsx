@@ -42,8 +42,8 @@ export default function NavBar() {
                             </Link>
                         </li>
                         <li onClick={toggleNavbar}>
-                            <Link href='/tutorial'>
-                                <div className={'cursor-pointer w-1/2 lg:w-auto m-auto my-1 lg:my-0 px-5 py-1 text-slate-800 hover:text-slate-400 transition-all ' + (currentPage.pathname === '/proximamente' ? "border rounded-2xl bg-slate-300 hover:text-slate-600" : "")}>TUTORIAL</div>
+                            <Link href='/canchas'>
+                                <div className={'cursor-pointer w-1/2 lg:w-auto m-auto my-1 lg:my-0 px-5 py-1 text-slate-800 hover:text-slate-400 transition-all ' + (currentPage.pathname === '/canchas' ? "border rounded-2xl bg-slate-300 hover:text-slate-600" : "")}>CANCHAS</div>
                             </Link>
                         </li>
                         <li onClick={toggleNavbar}>
