@@ -23,12 +23,11 @@ class MarkerService {
         }
     }
 
-    async getPaginatedCourtsData(lastCourtCalled: QueryDocumentSnapshot<DocumentData> | '') {
-        const q = query(collection(db, 'courts'), orderBy('courtName'), startAfter(lastCourtCalled), limit(6));
+    async getPaginatedCourtsData(lastCourtCalled: QueryDocumentSnapshot<DocumentData> | null) {
+        const q = query(collection(db, 'courts'), orderBy('courtName'), startAfter(lastCourtCalled ? lastCourtCalled : ''), limit(6));
         
         const querySnapshot = await getDocs(q);
-
-        const lastcourt = querySnapshot.docs[querySnapshot.docs.length-1];
+        const lastCourt = querySnapshot.docs.length > 5 ? querySnapshot.docs[querySnapshot.docs.length-1] : null;
         
         const courtsData = querySnapshot.docs.map((doc) => {
             const { courtName, address, municipality, province, surfaceType, numberOfHoops, numberOfCourts, rimHeight, rimCondition } = doc.data();
@@ -48,7 +47,7 @@ class MarkerService {
         });
         return {
             courtsData: courtsData,
-            lastCourtCalled: lastcourt
+            lastCourtCalled: lastCourt
         };
     }
 
