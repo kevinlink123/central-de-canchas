@@ -4,8 +4,11 @@ export interface MarkerDataInterface extends NewMarkerDataInterface {
     coordinates: LatLngTuple;
 }
 
-export interface NewMarkerDataInterface {
+export interface NewMarkerDataInterface extends NewMarkerFormDataInterface {
     uid: string;
+}
+
+export interface NewMarkerFormDataInterface {
     courtName: string;
     address: string;
     municipality: string;

@@ -2,11 +2,11 @@ import React, { Component, ChangeEvent } from 'react'
 import { AuthContext } from '../../contexts/AuthContext';
 import provinceAndCitiesDataJSON from '../../public/province-and-cities-data.json';
 
-import { NewMarkerDataInterface } from '../../types/Map.interface';
+import { NewMarkerFormDataInterface } from '../../types/Map.interface';
 import { ProvinceDataInterface } from '../../types/MarkerForm.interface';
 
 interface MarkerFormProps {
-    addMarkerToMap: (newMarkerData: NewMarkerDataInterface) => void;
+    addMarkerToMap: (newMarkerData: NewMarkerFormDataInterface) => void;
     registeringNewCourt: boolean;
 }
 

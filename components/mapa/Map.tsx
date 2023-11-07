@@ -16,7 +16,7 @@ import 'tippy.js/themes/material.css';
 import 'tippy.js/animations/scale.css'
 
 
-import { MarkerDataInterface, NewMarkerDataInterface } from "../../types/Map.interface";
+import { MarkerDataInterface, NewMarkerDataInterface, NewMarkerFormDataInterface } from "../../types/Map.interface";
 import MarkerForm from './MarkerForm';
 import NewMarkerWithPopup from "./NewMarkerWithPopup";
 import MarkerPopup from "./MarkerPopup";
@@ -175,7 +175,7 @@ class Map extends React.Component<MapProps, MapState> {
         this.newMarker.setLatLng([e.latlng.lat, e.latlng.lng]);
     }
 
-    async addMarkerToMap(newMarkerData: NewMarkerDataInterface) {
+    async addMarkerToMap(newMarkerData: NewMarkerFormDataInterface) {
         const { courtName, address, municipality, province, surfaceType, numberOfHoops, numberOfCourts, rimHeight, rimCondition } = newMarkerData;
         
         const nameOrAddressIsEmpty = courtName === '' || address === '';
@@ -291,7 +291,7 @@ class Map extends React.Component<MapProps, MapState> {
 
                     </div>
                     {this.state.isNewMarkerOnTheMap ?
-                        <MarkerForm registeringNewCourt={this.state.registeringNewCourt} addMarkerToMap={(markerData: NewMarkerDataInterface) => { this.addMarkerToMap(markerData) }} />
+                        <MarkerForm registeringNewCourt={this.state.registeringNewCourt} addMarkerToMap={(markerData: NewMarkerFormDataInterface) => { this.addMarkerToMap(markerData) }} />
                         :
                         <CourtInfo selectedMarker={this.state.selectedMarker} />
                     }
