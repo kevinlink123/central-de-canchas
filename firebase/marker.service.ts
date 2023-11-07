@@ -1,8 +1,7 @@
 import { getAuth } from "firebase/auth";
-import { addDoc, collection, updateDoc, doc, getDocs, query, limit, orderBy, startAfter, QueryDocumentSnapshot, DocumentData, arrayUnion } from "firebase/firestore";
+import { addDoc, collection, updateDoc, doc, getDocs, query, limit, orderBy, startAfter, QueryDocumentSnapshot, DocumentData, arrayUnion, where, deleteDoc } from "firebase/firestore";
 import { MarkerDataInterface } from "../types/Map.interface";
 import { app, db } from "./clientApp";
-import { CourtsTableData } from "../types/CourtsData.interface";
 
 class MarkerService {
     auth;
@@ -22,6 +21,18 @@ class MarkerService {
             });
 
         } catch (e: any) {
+            console.log(e.code);
+        }
+    }
+
+    async deleteCourt(courtName: string) {
+        try {
+            const q = query(collection(db, 'courts'), where('courtName', '==', courtName))
+            const querySnap = await getDocs(q);
+            const courtRef = querySnap.docs[0].ref;
+
+            await deleteDoc(courtRef);
+        } catch(e: any) {
             console.log(e.code);
         }
     }
