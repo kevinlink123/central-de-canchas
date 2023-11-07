@@ -31,29 +31,29 @@ export default function contacto() {
                     <div className='w-1/2 h-20 border flex items-center justify-center'>
                         <div className='flex items-center justify-center'>{phoneIcon}</div>
                         <div className='w-1/2'>
-                            <div className='font-semibold'>Whatsapp:</div>
-                            <div>11-6955-5040</div>
+                            <div className='font-semibold text-sm'>Whatsapp:</div>
+                            <div className='text-xs lg:text-base'>11-6955-5040</div>
                         </div>
                     </div>
                     <div className='w-1/2 h-20 border flex items-center justify-center'>
                         <div className='flex items-center justify-center'>{emailIcon}</div>
                         <div className='w-1/2'>
-                            <div className='font-semibold'>Email:</div>
-                            <div>cdc@hotmail.com</div>
+                            <div className='font-semibold text-sm'>Email:</div>
+                            <div className='text-xs lg:text-base'>cdc@hotmail.com</div>
                         </div>
                     </div>
                     <div className='w-1/2 h-20 border flex items-center justify-center'>
                         <div className='flex items-center justify-center'>{instagramIcon}</div>
                         <div className='w-1/2'>
-                            <div className='font-semibold'>Instagram:</div>
-                            <div>@Central de Canchas</div>
+                            <div className='font-semibold text-sm'>Instagram:</div>
+                            <div className='text-xs lg:text-base'>@Central de Canchas</div>
                         </div>
                     </div>
                     <div className='w-1/2 h-20 border flex items-center justify-center'>
                         <div className='flex items-center justify-center'>{phoneIcon}</div>
                         <div className='w-1/2'>
-                            <div className='m-auto font-semibold'>Facebook</div>
-                            <div>Central de Canchas</div>
+                            <div className='m-auto font-semibold text-sm'>Twitter</div>
+                            <div className='text-xs lg:text-base'>Proximente?</div>
                         </div>
                     </div>
                 </div>
