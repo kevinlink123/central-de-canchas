@@ -198,6 +198,7 @@ class Map extends React.Component<MapProps, MapState> {
         const coordinates: LatLngTuple = [this.newMarker.getLatLng().lat, this.newMarker.getLatLng().lng];
 
         const newMarkerDataToDatabase: MarkerDataInterface = {
+            uid: this.context.user.uid,
             coordinates: coordinates,
             courtName: courtName,
             address: address,

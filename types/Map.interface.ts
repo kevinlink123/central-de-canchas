@@ -5,6 +5,7 @@ export interface MarkerDataInterface extends NewMarkerDataInterface {
 }
 
 export interface NewMarkerDataInterface {
+    uid: string;
     courtName: string;
     address: string;
     municipality: string;

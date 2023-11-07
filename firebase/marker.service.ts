@@ -1,5 +1,5 @@
 import { getAuth } from "firebase/auth";
-import { addDoc, collection, getDoc, doc, getDocs, query, limit, orderBy, startAfter, QueryDocumentSnapshot, DocumentData } from "firebase/firestore";
+import { addDoc, collection, updateDoc, doc, getDocs, query, limit, orderBy, startAfter, QueryDocumentSnapshot, DocumentData, arrayUnion } from "firebase/firestore";
 import { MarkerDataInterface } from "../types/Map.interface";
 import { app, db } from "./clientApp";
 import { CourtsTableData } from "../types/CourtsData.interface";
@@ -11,12 +11,15 @@ class MarkerService {
         this.auth = getAuth(app);
     }
 
-    //Add id field to court data
     async registerNewMarker(newMarkerData: MarkerDataInterface) {
         try {
             const docRef = await addDoc(collection(db, 'courts'), newMarkerData);
-            console.log('Marcador agregado con éxito')
-            console.log('ID: ', docRef.id)
+
+            const { uid } = newMarkerData;
+            const userRef = doc(db, 'users', uid);
+            await updateDoc(userRef, {
+                registeredCourts: arrayUnion(docRef.id)
+            });
 
         } catch (e: any) {
             console.log(e.code);
@@ -57,9 +60,10 @@ class MarkerService {
             const querySnapshot = await getDocs(collection(db, 'courts'));
             const markers: MarkerDataInterface[] = [];
             querySnapshot.forEach((doc) => {
-                const { coordinates, courtName, address, municipality, province, surfaceType, numberOfHoops, numberOfCourts, rimHeight, rimCondition} = doc.data();
+                const { uid, coordinates, courtName, address, municipality, province, surfaceType, numberOfHoops, numberOfCourts, rimHeight, rimCondition} = doc.data();
 
                 const singleMarker = {
+                    uid: uid,
                     coordinates: coordinates,
                     courtName: courtName,
                     address: address,
