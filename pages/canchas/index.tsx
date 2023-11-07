@@ -65,14 +65,14 @@ export default function canchas() {
     );
 
     return (
-        <div className="w-full min-h-screen">
+        <div className="w-full min-h-screen overflow-x-auto">
             {courtsData.length ? null : (
                 <div className="flex justify-center items-center w-full h-screen">
                     {loadingIcon}
                 </div>
             )}
-            <div className={`main-grid min-h-full grid grid-rows-[repeat(${courtsData.length + 2},_minmax(0,_1fr))]`}>
-                <div className="headers w-full grid grid-cols-[repeat(9,_minmax(0,_1fr))]">
+            <div className={`main-grid min-h-full w-[250%] lg:w-full grid grid-rows-[repeat(${courtsData.length + 2},_minmax(0,_1fr))]`}>
+                <div className="headers w-full grid grid-cols-[repeat(9,_minmax(0,_1fr))] text-[12px] lg:text-base">
                     {headers.map((header: string) => {
                         return (
                             <div key={uuidv4()} className="single-header flex justify-center items-center py-1 text-center bg-gray-200 border border-gray-300 font-basketball tracking-widest">
@@ -91,7 +91,7 @@ export default function canchas() {
                         );
                     }
                     return (
-                        <div key={uuidv4()} className="row w-full grid grid-cols-[repeat(9,_minmax(0,_1fr))]">
+                        <div key={uuidv4()} className="row w-full grid grid-cols-[repeat(9,_minmax(0,_1fr))] text-[12px] lg:text-base">
                             {dataRow}
                         </div>
                     );
