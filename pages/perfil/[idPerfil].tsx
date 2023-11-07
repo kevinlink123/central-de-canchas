@@ -36,6 +36,7 @@ export default function () {
                     <img src='/generic-profile-pic.png' alt="logo" className='mx-auto h-28 rounded-full' />
                     <div>ID de Perfil: {userData?.id}</div>
                     <div>Nombre de Usuario: {userData?.username}</div>
+                    <div>Cantiad de Canchas registradas: {userData?.registeredCourts.length}</div>
                 </div>
             }
         </div>
