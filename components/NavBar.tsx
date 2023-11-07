@@ -34,7 +34,7 @@ export default function NavBar() {
                     </svg>
                 </div>
 
-                <div className={'menu-buttons lg:flex lg:justify-center lg:items-center lg:w-1/4 w-full transition-transform order-last lg:order-none ' + (isNavbarOpen ? '' : ' hidden')}>
+                <div className={'menu-buttons bg-gray-100/70 lg:bg-transparent h-screen lg:h-full lg:flex lg:justify-center lg:items-center lg:w-1/4 w-full order-last lg:order-none ' + (isNavbarOpen ? '' : ' hidden')}>
                     <ul className={'block text-center mt-3 lg:mt-0 w-full lg:flex lg:flex-row lg:justify-around lg:items-center'}>
                         <li onClick={toggleNavbar}>
                             <Link href='/mapa'>
