@@ -1,4 +1,10 @@
-import React, { ChangeEvent, ReactElement, useContext, useEffect, useState } from "react";
+import React, {
+    ChangeEvent,
+    ReactElement,
+    useContext,
+    useEffect,
+    useState,
+} from "react";
 import markerService from "../../firebase/marker.service";
 import { MarkerDataInterface } from "../../types/Map.interface";
 import {
@@ -14,7 +20,7 @@ import { AuthContext } from "../../contexts/AuthContext";
 
 export default function canchas() {
     const { user, loading } = useContext(AuthContext);
-    
+
     const [courtsData, setCourtsData] = useState<CourtsTableData[]>([]);
     const [headers, setHeaders] = useState<string[]>([]);
     const [lastCourtCalled, setLastCourtCalled] =
@@ -23,10 +29,13 @@ export default function canchas() {
     const [loadingData, setLoadingData] = useState(false);
     const [error, setError] = useState(false);
     const [isModalOpen, setIsModalOpen] = useState(false);
-    const [modalMessage, setModalMessage] = useState('');
-    const [aboutToDeleteCourt, setAboutToDeleteCourt] = useState<{index: number, courtName: string}>({
+    const [modalMessage, setModalMessage] = useState("");
+    const [aboutToDeleteCourt, setAboutToDeleteCourt] = useState<{
+        index: number;
+        courtName: string;
+    }>({
         index: 0,
-        courtName: ''
+        courtName: "",
     });
 
     useEffect(() => {
@@ -54,27 +63,29 @@ export default function canchas() {
     }
 
     async function deleteCourt() {
-        try {
-            await markerService.deleteCourt(aboutToDeleteCourt.courtName);
-            setAboutToDeleteCourt({
-                index: 0,
-                courtName: ''
-            });
-            const newCourts = [...courtsData]
-            newCourts.splice(aboutToDeleteCourt.index, 1);
-            setCourtsData(newCourts);
-            setIsModalOpen(false);
+        const res = await markerService.deleteCourt(
+            aboutToDeleteCourt.courtName
+        );
 
-        } catch(e: any) {
-            console.log(e.code);
+        if (res?.error) {
             setAboutToDeleteCourt({
                 index: 0,
-                courtName: ''
+                courtName: "",
             });
-            setModalMessage('Solo los usuarios admin puede eliminar canchas');
+
+            setModalMessage(res.error);
             setIsModalOpen(false);
             setError(true);
+            return;
         }
+        const newCourts = [...courtsData];
+        newCourts.splice(aboutToDeleteCourt.index, 1);
+        setCourtsData(newCourts);
+        setIsModalOpen(false);
+        setAboutToDeleteCourt({
+            index: 0,
+            courtName: "",
+        });
     }
 
     const loadingIcon = (
@@ -128,7 +139,11 @@ export default function canchas() {
                     {loadingIcon}
                 </div>
             )}
-            <div className={`main-grid min-h-full w-[250%] lg:w-full grid grid-rows-[repeat(${courtsData.length + 2 },_minmax(0,_1fr))]`}>
+            <div
+                className={`main-grid min-h-full w-[250%] lg:w-full grid grid-rows-[repeat(${
+                    courtsData.length + 2
+                },_minmax(0,_1fr))]`}
+            >
                 <div className="headers w-full grid grid-cols-[repeat(10,_minmax(0,_1fr))] text-[12px] lg:text-base">
                     {headers.map((header: string) => {
                         return (
@@ -165,17 +180,19 @@ export default function canchas() {
                             key={index}
                             className="single-cell flex justify-center items-center text-center py-4 px-2 border"
                         >
-                            <button 
+                            <button
                             onClick={(e) => {
-                                if(!user) {
-                                    setModalMessage('Tenés que estar logueado para realizar cualquier acción');
+                                if (!user) {
+                                    setModalMessage(
+                                        "Tenés que estar logueado para realizar cualquier acción"
+                                    );
                                     setError(true);
                                     return;
                                 }
                                 setAboutToDeleteCourt({
                                     index: index,
-                                    courtName: e.currentTarget.id
-                                })
+                                    courtName: e.currentTarget.parentElement!.id,
+                                });
                                 setIsModalOpen(true);
                             }}
                             >
@@ -210,7 +227,9 @@ export default function canchas() {
             </div>
             {isModalOpen && (
                 <ModalWithOptions
-                    message={'Seguro quiere eliminar la cancha permanentemente?'}
+                    message={
+                        "Seguro quiere eliminar la cancha permanentemente?"
+                    }
                     closeModal={() => {
                         setIsModalOpen(false);
                     }}
@@ -219,11 +238,12 @@ export default function canchas() {
                     }}
                 ></ModalWithOptions>
             )}
-            {
-                error && (
-                    <Modal message={modalMessage} closeModal={() => setError(false)}/>
-                )
-            }
+            {error && (
+                <Modal
+                    message={modalMessage}
+                    closeModal={() => setError(false)}
+                />
+            )}
         </div>
     );
 }
