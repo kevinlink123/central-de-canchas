@@ -9,6 +9,7 @@ import { v4 as uuidv4 } from "uuid";
 import { DocumentData, QueryDocumentSnapshot } from "firebase/firestore";
 import { Headers } from "../../constans/tableHeaders.constant";
 import ModalWithOptions from "../../components/ModalWithOptions";
+import Modal from "../../components/Modal";
 
 export default function canchas() {
     const [courtsData, setCourtsData] = useState<CourtsTableData[]>([]);
@@ -17,6 +18,7 @@ export default function canchas() {
         useState<QueryDocumentSnapshot<DocumentData> | null>(null);
 
     const [loadingData, setLoadingData] = useState(false);
+    const [error, setError] = useState(false);
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [aboutToDeleteCourt, setAboutToDeleteCourt] = useState<{index: number, courtName: string}>({
         index: 0,
@@ -60,7 +62,13 @@ export default function canchas() {
             setIsModalOpen(false);
 
         } catch(e: any) {
-            console.log(e);
+            console.log(e.code);
+            setAboutToDeleteCourt({
+                index: 0,
+                courtName: ''
+            });
+            setIsModalOpen(false);
+            setError(true);
         }
     }
 
@@ -198,6 +206,11 @@ export default function canchas() {
                     }}
                 ></ModalWithOptions>
             )}
+            {
+                error && (
+                    <Modal message="Solo los usuarios admin puede eliminar canchas" closeModal={() => setError(false)}/>
+                )
+            }
         </div>
     );
 }
