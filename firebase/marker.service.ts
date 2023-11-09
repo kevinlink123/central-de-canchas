@@ -26,17 +26,27 @@ class MarkerService {
     }
 
     async deleteCourt(courtName: string) {
-        const q = query(collection(db, 'courts'), where('courtName', '==', courtName));
-        const querySnap = await getDocs(q);
-        const courtRef = querySnap.docs[0].ref;
-        const { uid } = querySnap.docs[0].data();
+        try {
+            const q = query(collection(db, 'courts'), where('courtName', '==', courtName));
+            const querySnap = await getDocs(q);
+            const courtRef = querySnap.docs[0].ref;
+            const { uid } = querySnap.docs[0].data();
 
-        await deleteDoc(courtRef);
+            await deleteDoc(courtRef);
 
-        const userDocRef = doc(db, 'users', uid);
-        await updateDoc(userDocRef, {
-            registeredCourts: arrayRemove(courtRef.id)
-        });
+            const userDocRef = doc(db, 'users', uid);
+            await updateDoc(userDocRef, {
+                registeredCourts: arrayRemove(courtRef.id)
+            });
+            return {
+                error: ''
+            }
+        } catch(e: any) {
+            console.log(e);
+            return {
+                error: 'Solo los usuarios admin pueden eliminar canchas'
+            }
+        }
     }
 
     async getPaginatedCourtsData(lastCourtCalled: QueryDocumentSnapshot<DocumentData> | null) {
