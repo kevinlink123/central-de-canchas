@@ -40,6 +40,7 @@ class AuthService {
                 username: username,
                 email: email,
                 registeredCourts: [],
+                roles: []
             });
 
             console.log('usuario registrado con ID: ', user.user.uid);
