@@ -1,5 +1,5 @@
 import { getAuth } from "firebase/auth";
-import { addDoc, collection, updateDoc, doc, getDocs, query, limit, orderBy, startAfter, QueryDocumentSnapshot, DocumentData, arrayUnion, where, deleteDoc } from "firebase/firestore";
+import { addDoc, collection, updateDoc, doc, getDocs, query, limit, orderBy, startAfter, QueryDocumentSnapshot, DocumentData, arrayUnion, where, deleteDoc, getDoc, arrayRemove } from "firebase/firestore";
 import { MarkerDataInterface } from "../types/Map.interface";
 import { app, db } from "./clientApp";
 
@@ -26,15 +26,17 @@ class MarkerService {
     }
 
     async deleteCourt(courtName: string) {
-        try {
-            const q = query(collection(db, 'courts'), where('courtName', '==', courtName))
-            const querySnap = await getDocs(q);
-            const courtRef = querySnap.docs[0].ref;
+        const q = query(collection(db, 'courts'), where('courtName', '==', courtName));
+        const querySnap = await getDocs(q);
+        const courtRef = querySnap.docs[0].ref;
+        const { uid } = querySnap.docs[0].data();
 
-            await deleteDoc(courtRef);
-        } catch(e: any) {
-            console.log(e.code);
-        }
+        await deleteDoc(courtRef);
+
+        const userDocRef = doc(db, 'users', uid);
+        await updateDoc(userDocRef, {
+            registeredCourts: arrayRemove(courtRef.id)
+        });
     }
 
     async getPaginatedCourtsData(lastCourtCalled: QueryDocumentSnapshot<DocumentData> | null) {
