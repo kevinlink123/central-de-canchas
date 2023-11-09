@@ -1,4 +1,4 @@
-import React, { ChangeEvent, ReactElement, useEffect, useState } from "react";
+import React, { ChangeEvent, ReactElement, useContext, useEffect, useState } from "react";
 import markerService from "../../firebase/marker.service";
 import { MarkerDataInterface } from "../../types/Map.interface";
 import {
@@ -10,8 +10,11 @@ import { DocumentData, QueryDocumentSnapshot } from "firebase/firestore";
 import { Headers } from "../../constans/tableHeaders.constant";
 import ModalWithOptions from "../../components/ModalWithOptions";
 import Modal from "../../components/Modal";
+import { AuthContext } from "../../contexts/AuthContext";
 
 export default function canchas() {
+    const { user, loading } = useContext(AuthContext);
+    
     const [courtsData, setCourtsData] = useState<CourtsTableData[]>([]);
     const [headers, setHeaders] = useState<string[]>([]);
     const [lastCourtCalled, setLastCourtCalled] =
@@ -20,6 +23,7 @@ export default function canchas() {
     const [loadingData, setLoadingData] = useState(false);
     const [error, setError] = useState(false);
     const [isModalOpen, setIsModalOpen] = useState(false);
+    const [modalMessage, setModalMessage] = useState('');
     const [aboutToDeleteCourt, setAboutToDeleteCourt] = useState<{index: number, courtName: string}>({
         index: 0,
         courtName: ''
@@ -67,6 +71,7 @@ export default function canchas() {
                 index: 0,
                 courtName: ''
             });
+            setModalMessage('Solo los usuarios admin puede eliminar canchas');
             setIsModalOpen(false);
             setError(true);
         }
@@ -106,7 +111,7 @@ export default function canchas() {
             viewBox="0 0 24 24"
             strokeWidth="1.5"
             stroke="currentColor"
-            className="w-6 h-6 cursor-pointer"
+            className="w-6 h-6"
         >
             <path
                 strokeLinecap="round"
@@ -159,15 +164,23 @@ export default function canchas() {
                             id={singleCourtData.courtName}
                             key={index}
                             className="single-cell flex justify-center items-center text-center py-4 px-2 border"
+                        >
+                            <button 
                             onClick={(e) => {
+                                if(!user) {
+                                    setModalMessage('Tenés que estar logueado para realizar cualquier acción');
+                                    setError(true);
+                                    return;
+                                }
                                 setAboutToDeleteCourt({
                                     index: index,
                                     courtName: e.currentTarget.id
                                 })
                                 setIsModalOpen(true);
                             }}
-                        >
-                            {deleteIcon}
+                            >
+                                {deleteIcon}
+                            </button>
                         </div>
                     );
                     return (
@@ -208,7 +221,7 @@ export default function canchas() {
             )}
             {
                 error && (
-                    <Modal message="Solo los usuarios admin puede eliminar canchas" closeModal={() => setError(false)}/>
+                    <Modal message={modalMessage} closeModal={() => setError(false)}/>
                 )
             }
         </div>
