@@ -1,5 +1,5 @@
 import { getAuth } from "firebase/auth";
-import { addDoc, collection, updateDoc, doc, getDocs, query, limit, orderBy, startAfter, QueryDocumentSnapshot, DocumentData, arrayUnion, where, deleteDoc, getDoc, arrayRemove } from "firebase/firestore";
+import { addDoc, collection, updateDoc, doc, getDocs, query, limit, orderBy, startAfter, QueryDocumentSnapshot, DocumentData, arrayUnion, where, deleteDoc, getDoc, arrayRemove, documentId } from "firebase/firestore";
 import { MarkerDataInterface } from "../types/Map.interface";
 import { app, db } from "./clientApp";
 
@@ -86,6 +86,7 @@ class MarkerService {
                 const { uid, coordinates, courtName, address, municipality, province, surfaceType, numberOfHoops, numberOfCourts, rimHeight, rimCondition} = doc.data();
 
                 const singleMarker = {
+                    id: doc.id,
                     uid: uid,
                     coordinates: coordinates,
                     courtName: courtName,
@@ -105,6 +106,32 @@ class MarkerService {
         } catch (e: any) {
             console.log(e.code);
             return [];
+        }
+    }
+    
+    async getCourt(id: any) {
+        try {
+            const q = query(collection(db, 'courts'), where(documentId(), '==', id));
+            const querySnap = await getDocs(q);
+            const { uid, coordinates, courtName, address, municipality, province, surfaceType, numberOfHoops, numberOfCourts, rimHeight, rimCondition} = querySnap.docs[0].data();
+            const courtData = {
+                id: '',
+                uid,
+                coordinates,
+                courtName,
+                address,
+                municipality,
+                province,
+                surfaceType,
+                numberOfHoops,
+                numberOfCourts,
+                rimHeight,
+                rimCondition
+            }
+
+            return courtData;
+        } catch(e: any) {
+            console.log(e);
         }
     }
 }
