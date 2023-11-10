@@ -1,14 +1,7 @@
 import React, { useContext, useEffect, useState } from 'react'
 import { useRouter } from 'next/router'
-import { AuthContext } from '../../contexts/AuthContext';
 import authService from '../../firebase/auth.service';
 import { DocumentData } from '@firebase/firestore';
-
-export async function getServerSideProps() {
-    return {
-        props: {},
-    };
-}
 
 export default function () {
     const [userData, setUserData] = useState<DocumentData | undefined>();
@@ -19,8 +12,7 @@ export default function () {
 
     useEffect(() => {
         const fetchUserData = async () => {
-            console.log(idPerfil);
-            const userData = await authService.getProfile(idPerfil);
+            const userData = await authService.getProfile(idPerfil as string);
             setUserData(userData);
             setLoading(false);
         }
