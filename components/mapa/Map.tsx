@@ -16,7 +16,7 @@ import 'tippy.js/themes/material.css';
 import 'tippy.js/animations/scale.css'
 
 
-import { MarkerDataInterface, NewMarkerDataInterface, NewMarkerFormDataInterface } from "../../types/Map.interface";
+import { MarkerDataInterface, NewMarkerFormDataInterface } from "../../types/Map.interface";
 import MarkerForm from './MarkerForm';
 import NewMarkerWithPopup from "./NewMarkerWithPopup";
 import MarkerPopup from "./MarkerPopup";
@@ -180,12 +180,6 @@ class Map extends React.Component<MapProps, MapState> {
         
         const nameOrAddressIsEmpty = courtName === '' || address === '';
 
-        try {
-            
-        } catch (error) {
-            
-        }
-
         if (!this.context.user) {
             this.openModal('Tenés que estar logueado para registrar nuevas canchas');
             return;
@@ -198,6 +192,7 @@ class Map extends React.Component<MapProps, MapState> {
         const coordinates: LatLngTuple = [this.newMarker.getLatLng().lat, this.newMarker.getLatLng().lng];
 
         const newMarkerDataToDatabase: MarkerDataInterface = {
+            id: '',
             uid: this.context.user.uid,
             coordinates: coordinates,
             courtName: courtName,
