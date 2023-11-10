@@ -1,6 +1,7 @@
 import { createUserWithEmailAndPassword, ErrorFn, getAuth, signInWithEmailAndPassword } from "firebase/auth";
-import { addDoc, collection, doc, getDoc, setDoc } from "firebase/firestore";
+import { addDoc, collection, doc, documentId, getDoc, getDocs, query, setDoc, where } from "firebase/firestore";
 import { app, db } from "./clientApp";
+import { UserData } from "../types/UserData.interface";
 
 class AuthService {
     auth;
@@ -65,12 +66,20 @@ class AuthService {
 
     async getProfile(profileId: any) {
         try {
-            const docRef = doc(db, 'users', profileId);
-            const docSnapshot = await getDoc(docRef);
-            const userData = docSnapshot.data();
+            const q = query(collection(db, 'users'), where(documentId(), '==', profileId));
+            const docSnapshot = await getDocs(q);
+            const { id, email, registeredCourts, roles, username } = docSnapshot.docs[0].data();
+            const userData = {
+                id,
+                email,
+                registeredCourts,
+                roles,
+                username
+            }
             return userData;
         } catch (e: any) {
             console.log(e.code);
+            return {} as UserData;
         }
     }
 }
