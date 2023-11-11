@@ -5,6 +5,7 @@ import { MarkerDataInterface } from "../../types/Map.interface";
 import authService from "../../firebase/auth.service";
 import { UserData } from "../../types/UserData.interface";
 import Card from "../../components/Card";
+import { Headers, courtDataTitles } from "../../constans/court.constants";
 
 export default function () {
     const [courtData, setCourtData] = useState<MarkerDataInterface>();
@@ -18,7 +19,7 @@ export default function () {
 
         const fetchCourtData = async () => {
             const fetchCourtData = await markerService.getCourt(idCourt as string);
-            const courtCreator = await authService.getProfile(fetchCourtData?.uid);
+            const courtCreator = await authService.getProfile(fetchCourtData.uid);
             setCourtData(fetchCourtData);
             setCourtCreator(courtCreator);
         };
@@ -36,38 +37,15 @@ export default function () {
                         <div className="my-4 text-6xl font-bold">{courtData.courtName}</div>
                         <div className="text-lg">{courtData.address}, <span className="font-medium">{courtData.municipality}</span>, <span className="font-medium">{courtData.province}</span></div>
                     </div>
-                    <div className="info-cards-container grid grid-cols-6 w-3/4 my-4 items-stretch">
-                        {/* <div className="info-card grid grid-rows-3 text-center items-center bg-gray-400 mx-6">
-                            <div>LOGO</div>
-                            <div className="text-center">Material del Suelo</div>
-                            {courtData.surfaceType}
-                        </div> */}
-                        <Card logo={<div>LGOGOOG</div>} infoName={"Material del Suelo"} data={courtData.surfaceType} />
-                        <div className="info-card grid grid-rows-3 text-center items-center bg-gray-400 mx-6">
-                            <div>LOGO</div>
-                            <div className="text-center">Cantidad de Canchas</div>
-                            {courtData.numberOfCourts}
-                        </div>
-                        <div className="info-card grid grid-rows-3 text-center items-center bg-gray-400 mx-6">
-                            <div>LOGO</div>
-                            <div className="text-center">Cantidad de Aros Disponibles</div>
-                            {courtData.numberOfHoops}
-                        </div>
-                        <div className="info-card flex flex-col justify-around items-center bg-gray-400 mx-6">
-                            <div>LOGO</div>
-                            <div className="text-center">Condición de los Aros</div>
-                            {courtData.rimCondition}
-                        </div>
-                        <div className="info-card flex flex-col justify-around items-center bg-gray-400 mx-6">
-                            <div>LOGO</div>
-                            <div className="text-center">Altura de los Aros</div>
-                            {courtData.rimHeight}
-                        </div>
-                        <div className="info-card flex flex-col justify-around items-center bg-gray-400 mx-6">
-                            <div>LOGO</div>
-                            <div className="text-center">Registrado por</div>
-                            {courtCreator?.username}
-                        </div>
+                    <div className="info-cards-container grid grid-cols-6 w-3/4 h-52 my-4 items-stretch">
+                        {
+                            courtDataTitles.map((title) => {
+                                return (
+                                    <Card logo={<div>LOOGOO</div>} infoName={Headers[title as keyof typeof Headers]} data={courtData[title as keyof MarkerDataInterface]}/>
+                                )
+                            })
+                        }
+                        <Card logo={<div>LOOGOO</div>} infoName="Cancha registrada por" data={courtCreator?.username || ''} />
                     </div>
                 </div>
             }
