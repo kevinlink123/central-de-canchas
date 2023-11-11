@@ -132,6 +132,7 @@ class MarkerService {
             return courtData;
         } catch(e: any) {
             console.log(e);
+            return {} as MarkerDataInterface;
         }
     }
 }
