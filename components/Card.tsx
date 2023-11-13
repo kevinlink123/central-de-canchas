@@ -3,16 +3,17 @@ import React, { ReactElement } from "react";
 
 interface CardProps {
     logo: ReactElement;
-    infoName: string;
-    data: string | LatLngTuple;
+    infoName: string | React.ReactNode;
+    data: string | LatLngTuple | React.ReactNode;
 }
 
 export default function Card(props: CardProps) {
+    const { data } = props;
     return (
-        <div className="info-card grid grid-rows-3 text-center items-center bg-gray-400 mx-6 py-8 px-2 rounded-lg">
-            <div>{props.logo}</div>
+        <div className="info-card flex flex-col justify-around items-center text-center w-full mx-6 px-2 py-4 rounded-lg bg-gray-100 shadow-gray-200 shadow-lg">
+            <div className="w-full flex justify-center">{props.logo}</div>
             <div className="text-center">{props.infoName}</div>
-            {props.data}
+            <div className="font-bold py-3">{data}</div>
         </div>
     );
 }
