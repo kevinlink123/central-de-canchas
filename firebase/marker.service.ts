@@ -1,5 +1,5 @@
 import { getAuth } from "firebase/auth";
-import { addDoc, collection, updateDoc, doc, getDocs, query, limit, orderBy, startAfter, QueryDocumentSnapshot, DocumentData, arrayUnion, where, deleteDoc, getDoc, arrayRemove, documentId } from "firebase/firestore";
+import { addDoc, collection, updateDoc, doc, getDocs, query, limit, orderBy, startAfter, QueryDocumentSnapshot, DocumentData, arrayUnion, where, deleteDoc, getDoc, arrayRemove, documentId, setDoc } from "firebase/firestore";
 import { MarkerDataInterface } from "../types/Map.interface";
 import { app, db } from "./clientApp";
 
@@ -18,6 +18,9 @@ class MarkerService {
             const userRef = doc(db, 'users', uid);
             await updateDoc(userRef, {
                 registeredCourts: arrayUnion(docRef.id)
+            });
+            await updateDoc(docRef, {
+                id: docRef.id
             });
 
         } catch (e: any) {
@@ -133,6 +136,56 @@ class MarkerService {
         } catch(e: any) {
             console.log(e);
             return {} as MarkerDataInterface;
+        }
+    }
+
+    async getCourtRating(courtId: string) {
+        try {
+            const querySnap = await getDocs(collection(db, `courts/${courtId}/ratings`));
+            querySnap.docs.forEach((doc) => {
+                console.log(doc.data())
+            })
+            const averageRating = querySnap.docs.reduce((acc, doc) => {
+                const rating: number = doc.data().rating;
+                console.log(rating);
+                return acc + rating;
+            }, 0);
+
+            if(averageRating == 0) { return {averageRating, totalRatings: 0} }
+
+            return {
+                averageRating: averageRating/querySnap.docs.length,
+                totalRatings: querySnap.docs.length
+            };
+        } catch(e: any) {
+            console.log(e.code);
+            return {
+                averageRating: 0,
+                totalRatings: 0
+            }
+        }
+    }
+
+    async rateCourt(uid: string, courtId: string, rating: number) {
+        try {
+            const refF = await setDoc(doc(db, `courts/${courtId}/ratings`, uid), {
+                rating
+            });
+            return {
+                message: 'Cancha calificada con éxito!',
+                error: false
+            }
+        } catch(e: any) {
+            console.log(e);
+
+            switch (e.code) {
+                case 'permission-denied':
+                    return { error: true, message: 'Ya calificaste esta cancha anteriormente!' };
+
+                default:
+                    return { error: true, message: 'Error al comunicarse con el servidor, intente de nuevo mas tarde' };
+
+            }
         }
     }
 }
