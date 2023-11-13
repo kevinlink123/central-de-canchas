@@ -8,7 +8,7 @@ interface AverageStarRatingProps {
 export default function AverageStarRating(props: AverageStarRatingProps) {
     return (
         <div className="star-rating">
-            <div className="my-4">Calificación promedio</div>
+            <div className="">Calificación promedio</div>
             {[...Array(5)].map((star, index) => {
                 index += 1;
                 return (
