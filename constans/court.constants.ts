@@ -1,5 +1,3 @@
-import { basketBallCourtIcon } from "../components/icons/Icons";
-
 export enum HEADERS {
     'surfaceType' = 'Superficie del piso',
     'numberOfHoops' = 'Aros Disponibles',
