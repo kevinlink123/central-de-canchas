@@ -194,6 +194,7 @@ class Map extends React.Component<MapProps, MapState> {
         const newMarkerDataToDatabase: MarkerDataInterface = {
             id: '',
             uid: this.context.user.uid,
+            visits: 0,
             coordinates: coordinates,
             courtName: courtName,
             address: address,
