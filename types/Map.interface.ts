@@ -7,6 +7,7 @@ export interface MarkerDataInterface extends NewMarkerFormDataInterface {
 }
 
 export interface NewMarkerFormDataInterface {
+    visits: number;
     courtName: string;
     address: string;
     municipality: string;
