@@ -128,6 +128,7 @@ class MarkerForm extends Component<MarkerFormProps, MarkerFormState> {
         const { courtName, address, municipality, province, surfaceType, numberOfHoops, numberOfCourts, rimHeight, rimCondition } = this.state;
 
         const newMarkerData = {
+            visits: 0,
             courtName: courtName,
             address: address,
             municipality,
