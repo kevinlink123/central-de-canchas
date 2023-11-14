@@ -66,39 +66,39 @@ export default function () {
                         <div className="text-lg">{courtData.address},{" "}<span className="font-medium">{courtData.municipality}</span>,{" "}<span className="font-medium">{courtData.province}</span></div>
                     </div>
 
-                    <div className="info-cards-container flex justify-center items-stretch w-2/4 h-60 my-4">
-                    <Card
-                        logo={<div><span className="star text-5xl text-yellow-300">&#9733;</span></div>}
-                        infoName={<AverageStarRating rating={averageRating!.averageRating} />}
-                        data={
-                            <div>
-                                <div>{`${averageRating?.totalRatings} jugadores calificaron`}</div>
-                                <Button name="CALIFICAR" dark={false} onClick={() => setRatingModalOpen(true)}/>
-                            </div>
-                        }
-                    />
+                    <div className="info-cards-container flex justify-center items-stretch w-full lg:w-3/4 h-60 my-4">
+                        <Card
+                            logo={<div><span className="star text-5xl text-yellow-300">&#9733;</span></div>}
+                            infoName={<AverageStarRating rating={averageRating!.averageRating} />}
+                            data={
+                                <div>
+                                    <div className="">{`${averageRating?.totalRatings} jugadores calificaron`}</div>
+                                    <Button name="CALIFICAR" dark={false} onClick={() => setRatingModalOpen(true)}/>
+                                </div>
+                            }
+                        />
 
-                    <Card
-                        logo={mapPinIcon}
-                        infoName={'Visitas a la pagina de cancha'}
-                        data={'20 Personas vieron la cancha'}
-                    />
-                    <Card
-                        logo={heartIcon}
-                        infoName={<div><b>{2} jugadores ya la guardaron</b></div>}
-                        data={
-                            <div>
-                                <Button name="MARCAR COMO FAVORITO" dark={false} onClick={() => setRatingModalOpen(false)}/>
-                            </div>
-                        }
-                    />
+                        <Card
+                            logo={mapPinIcon}
+                            infoName={'Visitas a la pagina de cancha'}
+                            data={`${courtData.visits} vieron la cancha`}
+                        />
+                        <Card
+                            logo={heartIcon}
+                            infoName={<div><b>{2} jugadores ya la guardaron</b></div>}
+                            data={
+                                <div>
+                                    <Button name="MARCAR COMO FAVORITO" dark={false} onClick={() => setRatingModalOpen(false)}/>
+                                </div>
+                            }
+                        />
                     </div>
 
                     <div className="border-t-4 h-1 w-2/4 my-20"></div>
 
                     <h2 className="text-4xl mb-8 font-bold uppercase">Datos de la cancha</h2>
 
-                    <div className="info-cards-container grid grid-cols-6 gap-8 w-3/4 h-52 my-10 mb-28 items-stretch">
+                    <div className="info-cards-container block lg:grid lg:grid-cols-6 lg:gap-8 lg:w-3/4 w-4/5 min-h-52 my-10 mb-28 items-stretch">
                         {COURTDATATITLES.map((title) => {
                             const logoElement = (
                                 <Image 
