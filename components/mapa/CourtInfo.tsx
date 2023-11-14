@@ -3,6 +3,8 @@ import { AnimatePresence, motion } from 'framer-motion';
 
 import { MarkerDataInterface } from '../../types/Map.interface';
 import NavBarButton from '../navBar/NavBarButton';
+import Link from 'next/link';
+import Button from '../Button';
 
 interface CourtInfoPropsInterface {
     selectedMarker: MarkerDataInterface;
@@ -89,7 +91,10 @@ export default function CourtInfo(props: CourtInfoPropsInterface) {
                 </div>
 
                 <div className="submit-button-container flex justify-center items-center mb-10">
-                    <NavBarButton dark={false} to={'/canchas' + '/' + props.selectedMarker.id} name='Página de la Cancha' icon={<></>} />
+                    <Link href={'/canchas' + '/' + props.selectedMarker.id}>
+                        <Button dark={false} name='Página de la cancha' onClick={() => {}}/>
+                    </Link>
+                    {/* <NavBarButton dark={false} to={'/canchas' + '/' + props.selectedMarker.id} name='Página de la Cancha' icon={<></>} /> */}
                 </div>
             </div>
         </div>
