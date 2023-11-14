@@ -26,7 +26,7 @@ export default function Button(props: ButtonInterface) {
                         : "lg:mx-1 text-slate-800 font-semibold text-sm"
                 }
             >
-                <div className="hidden uppercase lg:block">{props.name}</div>
+                <div className="uppercase lg:block">{props.name}</div>
             </button>
         </div>
     );
