@@ -15,14 +15,14 @@ import Button from "../../components/Button";
 import { AuthContext } from "../../contexts/AuthContext";
 
 const mapPinIcon = (
-    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-12 h-12">
+    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="lg:w-12 lg:h-12 w-10 h-10">
         <path strokeLinecap="round" strokeLinejoin="round" d="M15 10.5a3 3 0 11-6 0 3 3 0 016 0z" />
         <path strokeLinecap="round" strokeLinejoin="round" d="M19.5 10.5c0 7.142-7.5 11.25-7.5 11.25S4.5 17.642 4.5 10.5a7.5 7.5 0 1115 0z" />
     </svg>
 )
 
 const heartIcon = (
-    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-12 h-12">
+    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="lg:w-12 lg:h-12 w-10 h-10">
         <path strokeLinecap="round" strokeLinejoin="round" d="M21 8.25c0-2.485-2.099-4.5-4.688-4.5-1.935 0-3.597 1.126-4.312 2.733-.715-1.607-2.377-2.733-4.313-2.733C5.1 3.75 3 5.765 3 8.25c0 7.22 9 12 9 12s9-4.78 9-12z" />
     </svg>  
 )
@@ -66,9 +66,9 @@ export default function () {
                         <div className="text-lg">{courtData.address},{" "}<span className="font-medium">{courtData.municipality}</span>,{" "}<span className="font-medium">{courtData.province}</span></div>
                     </div>
 
-                    <div className="info-cards-container flex justify-center items-stretch w-full lg:w-3/4 h-60 my-4">
+                    <div className="info-cards-container flex justify-center items-stretch w-full lg:w-3/4 min-h-60 my-4">
                         <Card
-                            logo={<div><span className="star text-5xl text-yellow-300">&#9733;</span></div>}
+                            logo={<div><span className="star text-4xl lg:text-5xl text-yellow-300">&#9733;</span></div>}
                             infoName={<AverageStarRating rating={averageRating!.averageRating} />}
                             data={
                                 <div>
@@ -96,7 +96,7 @@ export default function () {
 
                     <div className="border-t-4 h-1 w-2/4 my-20"></div>
 
-                    <h2 className="text-4xl mb-8 font-bold uppercase">Datos de la cancha</h2>
+                    <h2 className="text-4xl mb-8 mx-2 font-bold uppercase text-center">Datos de la cancha</h2>
 
                     <div className="info-cards-container block lg:grid lg:grid-cols-6 lg:gap-8 lg:w-3/4 w-4/5 min-h-52 my-10 mb-28 items-stretch">
                         {COURTDATATITLES.map((title) => {
