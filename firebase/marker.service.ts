@@ -86,12 +86,13 @@ class MarkerService {
             const querySnapshot = await getDocs(collection(db, 'courts'));
             const markers: MarkerDataInterface[] = [];
             querySnapshot.forEach((doc) => {
-                const { uid, visits, coordinates, courtName, address, municipality, province, surfaceType, numberOfHoops, numberOfCourts, rimHeight, rimCondition} = doc.data();
+                const { uid, visits, favoritesCount, coordinates, courtName, address, municipality, province, surfaceType, numberOfHoops, numberOfCourts, rimHeight, rimCondition} = doc.data();
 
                 const singleMarker = {
                     id: doc.id,
                     uid: uid,
                     visits: visits,
+                    favoritesCount: favoritesCount,
                     coordinates: coordinates,
                     courtName: courtName,
                     address: address,
@@ -123,11 +124,12 @@ class MarkerService {
 
             const q = query(collection(db, 'courts'), where(documentId(), '==', id));
             const querySnap = await getDocs(q);
-            const { uid, visits, coordinates, courtName, address, municipality, province, surfaceType, numberOfHoops, numberOfCourts, rimHeight, rimCondition} = querySnap.docs[0].data();
+            const { uid, visits, favoritesCount, coordinates, courtName, address, municipality, province, surfaceType, numberOfHoops, numberOfCourts, rimHeight, rimCondition} = querySnap.docs[0].data();
             const courtData = {
                 id: querySnap.docs[0].id,
                 uid,
                 visits,
+                favoritesCount,
                 coordinates,
                 courtName,
                 address,
@@ -150,12 +152,8 @@ class MarkerService {
     async getCourtRating(courtId: string) {
         try {
             const querySnap = await getDocs(collection(db, `courts/${courtId}/ratings`));
-            querySnap.docs.forEach((doc) => {
-                console.log(doc.data())
-            })
             const averageRating = querySnap.docs.reduce((acc, doc) => {
                 const rating: number = doc.data().rating;
-                console.log(rating);
                 return acc + rating;
             }, 0);
 
@@ -195,6 +193,65 @@ class MarkerService {
 
             }
         }
+    }
+
+    async saveFavoriteCourt(uid: string, courtId: string) {
+        try {
+            const userRef = doc(db, 'users', uid);
+            await updateDoc(userRef, {
+                favoriteCourts: arrayUnion(courtId)
+            });
+            
+            const courtRef = doc(db, 'courts', courtId);
+            await updateDoc(courtRef, {
+                favoritesCount: increment(1)
+            });
+            
+            return {
+                message: 'Cancha guardada como favorita!',
+                error: false
+            }
+        } catch(e: any) {
+            console.log(e.code);
+            return {
+                message: 'Ocurrio un error al intentar guardar la cancha, intente mas tarde',
+                error: true
+            }
+        }
+    }
+
+    async unFavoriteCourt(uid: string, courtId: string) {
+        try {
+            const userRef = doc(db, 'users', uid);
+            await updateDoc(userRef, {
+                favoriteCourts: arrayRemove(courtId)
+            });
+            
+            const courtRef = doc(db, 'courts', courtId);
+            await updateDoc(courtRef, {
+                favoritesCount: increment(-1)
+            });
+
+            return {
+                message: 'La cancha fue removida de tus favoritos',
+                error: false
+            }
+        } catch(e: any) {
+            console.log(e.code);
+            return {
+                message: 'Ocurrio un error al intentar quitar la cancha de tus favoritos, intente mas tarde',
+                error: true
+            }
+        }
+    }
+
+    async isUserAlreadyFavoriteCourt(uid: string, courtId: string) {
+        const q = query(collection(db, 'users'), where(documentId(), '==', uid));
+
+        const querySnap = await getDocs(q);
+        const { favoriteCourts } = querySnap.docs[0].data();
+        
+        return favoriteCourts.includes(courtId);
     }
 }
 
