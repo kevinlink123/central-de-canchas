@@ -195,6 +195,7 @@ class Map extends React.Component<MapProps, MapState> {
             id: '',
             uid: this.context.user.uid,
             visits: 0,
+            favoritesCount: 0,
             coordinates: coordinates,
             courtName: courtName,
             address: address,
