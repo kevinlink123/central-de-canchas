@@ -4,6 +4,7 @@ export interface MarkerDataInterface extends NewMarkerFormDataInterface {
     id: string;
     uid: string;
     coordinates: LatLngTuple;
+    favoritesCount: number;
 }
 
 export interface NewMarkerFormDataInterface {
