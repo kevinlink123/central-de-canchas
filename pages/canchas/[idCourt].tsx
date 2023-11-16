@@ -116,7 +116,7 @@ export default function () {
                 <div className="court-data-container flex flex-col justify-center items-center">
                     <div className="name-address">
                         <div className="my-4 text-6xl font-bold text-center">{courtData.courtName}</div>
-                        <div className="text-lg">{courtData.address},{" "}<span className="font-medium">{courtData.municipality}</span>,{" "}<span className="font-medium">{courtData.province}</span></div>
+                        <div className="text-lg text-center">{courtData.address},{" "}<span className="font-medium">{courtData.municipality}</span>,{" "}<span className="font-medium">{courtData.province}</span></div>
                     </div>
 
                     <div className="info-cards-container flex justify-center items-stretch w-full lg:w-3/4 min-h-60 my-4">
