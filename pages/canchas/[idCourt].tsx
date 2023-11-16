@@ -1,5 +1,5 @@
 import { useRouter } from "next/router";
-import React, { useContext, useEffect, useState } from "react";
+import React, { useContext, useEffect, useRef, useState } from "react";
 import markerService from "../../firebase/marker.service";
 import { MarkerDataInterface } from "../../types/Map.interface";
 import authService from "../../firebase/auth.service";
@@ -22,25 +22,57 @@ const mapPinIcon = (
 )
 
 const heartIcon = (
-    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="lg:w-12 lg:h-12 w-10 h-10">
+    <svg xmlns="http://www.w3.org/2000/svg" fill="" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className={"lg:w-12 lg:h-12 w-10 h-10"}>
         <path strokeLinecap="round" strokeLinejoin="round" d="M21 8.25c0-2.485-2.099-4.5-4.688-4.5-1.935 0-3.597 1.126-4.312 2.733-.715-1.607-2.377-2.733-4.313-2.733C5.1 3.75 3 5.765 3 8.25c0 7.22 9 12 9 12s9-4.78 9-12z" />
     </svg>  
 )
 
+const loadingIcon = (
+    <svg
+        className="asd animate-custom-spin "
+        width="36"
+        height="36"
+        viewBox="0 0 24 24"
+        fill="none"
+        xmlns="http://www.w3.org/2000/svg"
+    >
+        <path
+            opacity="0.2"
+            fillRule="evenodd"
+            clipRule="evenodd"
+            d="M12 19C15.866 19 19 15.866 19 12C19 8.13401 15.866 5 12 5C8.13401 5 5 8.13401 5 12C5 15.866 8.13401 19 12 19ZM12 22C17.5228 22 22 17.5228 22 12C22 6.47715 17.5228 2 12 2C6.47715 2 2 6.47715 2 12C2 17.5228 6.47715 22 12 22Z"
+            fill="currentColor"
+        />
+        <path
+            d="M12 22C17.5228 22 22 17.5228 22 12H19C19 15.866 15.866 19 12 19V22Z"
+            fill="currentColor"
+        />
+        <path
+            d="M2 12C2 6.47715 6.47715 2 12 2V5C8.13401 5 5 8.13401 5 12H2Z"
+            fill="currentColor"
+        />
+    </svg>
+);
+
 export default function () {
     const [courtData, setCourtData] = useState<MarkerDataInterface>();
     const [courtCreator, setCourtCreator] = useState<UserData>();
+    const [isFavorite, setIsFavorite] = useState<boolean>();
     
     const [ratingModalOpen, setRatingModalOpen] = useState(false);
     const [averageRating, setAverageRating] = useState<{averageRating: number, totalRatings: number}>();
 
-    const { user } = useContext(AuthContext);
+    const [favoriteCourtModalOpen, setFavoriteCourtModalOpen] = useState(false);
+    const [markingAsFavorite, setMarkingAsFavorite] = useState(false);
+    const [message, setMessage] = useState('');
+
+    const { user, loading } = useContext(AuthContext);
 
     const router = useRouter();
     const { idCourt } = router.query;
 
     useEffect(() => {
-        if (!idCourt) {
+        if (!idCourt || loading) {
             return;
         }
 
@@ -48,12 +80,33 @@ export default function () {
             const fetchCourtData = await markerService.getCourt(idCourt as string);
             const courtCreator = await authService.getProfile(fetchCourtData.uid);
             const fetchAverageRating = await markerService.getCourtRating(idCourt as string);
+            const isUserAlreadyFavoriteCourt = await markerService.isUserAlreadyFavoriteCourt(user?.uid as string, idCourt as string);
+
+            setIsFavorite(isUserAlreadyFavoriteCourt);
             setAverageRating(fetchAverageRating);
             setCourtData(fetchCourtData);
             setCourtCreator(courtCreator);
         };
         fetchCourtData();
-    }, [idCourt]);
+    }, [idCourt, loading]);
+
+    async function favoriteCourt() {
+        setMarkingAsFavorite(true);
+        const res = await markerService.saveFavoriteCourt(user?.uid as string, idCourt as string);
+        setFavoriteCourtModalOpen(true);
+        setMessage(res.message);
+        setMarkingAsFavorite(false);
+        setIsFavorite(true);
+    }
+
+    async function unFavoriteCourt() {
+        setMarkingAsFavorite(true);
+        const res = await markerService.unFavoriteCourt(user?.uid as string, idCourt as string);
+        setFavoriteCourtModalOpen(true);
+        setMessage(res.message);
+        setMarkingAsFavorite(false);
+        setIsFavorite(false);
+    }
 
     return (
         <div className="w-full min-h-full">
@@ -84,12 +137,20 @@ export default function () {
                             data={`${courtData.visits} vieron la cancha`}
                         />
                         <Card
-                            logo={heartIcon}
-                            infoName={<div><b>{2} jugadores ya la guardaron</b></div>}
+                            logo={
+                                <svg xmlns="http://www.w3.org/2000/svg" fill="" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className={"lg:w-12 lg:h-12 w-10 h-10" + (isFavorite ? ' fill-red-600 stroke-red-600' : '')}>
+                                    <path strokeLinecap="round" strokeLinejoin="round" d="M21 8.25c0-2.485-2.099-4.5-4.688-4.5-1.935 0-3.597 1.126-4.312 2.733-.715-1.607-2.377-2.733-4.313-2.733C5.1 3.75 3 5.765 3 8.25c0 7.22 9 12 9 12s9-4.78 9-12z" />
+                                </svg>
+                            }
+                            infoName={<div><b>{courtData.favoritesCount ? courtData.favoritesCount : 0} jugadores ya la guardaron</b></div>}
                             data={
-                                <div>
-                                    <Button name="MARCAR COMO FAVORITO" dark={false} onClick={() => setRatingModalOpen(false)}/>
-                                </div>
+                                !markingAsFavorite ? 
+                                ( !isFavorite ?
+                                <div><Button name="MARCAR COMO FAVORITO" dark={false} onClick={() => favoriteCourt()}/></div>
+                                : 
+                                <div><Button name="DESMARCAR COMO FAVORITO" dark={false} onClick={() => unFavoriteCourt()}/></div>)
+                                :
+                                <>{loadingIcon}</>
                             }
                         />
                     </div>
@@ -131,6 +192,7 @@ export default function () {
                     </div>
 
                     {ratingModalOpen && <GenericModal closeModal={() => setRatingModalOpen(false)} message={<StarRating uid={user?.uid as string} courtId={idCourt as string} courtName={courtData.courtName} closeModal={() => setRatingModalOpen(false)} />} />}
+                    {favoriteCourtModalOpen && <GenericModal closeModal={() => setFavoriteCourtModalOpen(false)} message={message} />}
                 </div>
             )}
         </div>
