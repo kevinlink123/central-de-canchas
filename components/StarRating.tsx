@@ -1,6 +1,7 @@
 import Image from "next/image";
 import React, { useState } from "react";
 import markerService from "../firebase/marker.service";
+import { useRouter } from "next/router";
 
 interface StarRatingProps {
     uid: string;
@@ -15,12 +16,19 @@ export default function StarRating(props: StarRatingProps) {
     const [loading, setLoading] = useState(false);
     const [message, setMessage] = useState("");
 
+    const router = useRouter();
+
+    const delay = (ms: number) => new Promise(res => setTimeout(res, ms));
+
     async function rateCourt(rate: number) {
         setRating(rate);
         setLoading(true);
         const res = await markerService.rateCourt(props.uid, props.courtId, rate);
         setMessage(res.message);
-        setLoading(false);
+        if (!res.error) {
+            await delay(2000);
+            router.reload();
+        }
     }
 
     return (
