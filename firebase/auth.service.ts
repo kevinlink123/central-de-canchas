@@ -64,7 +64,7 @@ class AuthService {
         }
     }
 
-    async getProfile(profileId: any) {
+    async getProfile(profileId: string) {
         try {
             const q = query(collection(db, 'users'), where(documentId(), '==', profileId));
             const docSnapshot = await getDocs(q);
