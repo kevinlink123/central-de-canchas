@@ -1,7 +1,7 @@
 {
-    "name": "Next.js PWA Demo",
-    "short_name": "pwaedemo",
-    "description": "A Progressive Web App built with Next.js",
+    "name": "Central de Canchas",
+    "short_name": "CDC",
+    "description": "Central de canchas es una PWA para registar canchas de basket en argentina",
     "start_url": "/",
     "display": "standalone",
     "background_color": "#ffffff",
