@@ -30,8 +30,8 @@ export default function ingresar() {
 	}
 
 	return (
-		<div className='main mx-auto h-screen z- my-10'>
-			<div className='form-container m-auto flex flex-col justify-between items-center h-4/6 lg:w-1/3 w-full -z-40 bg-slate-100 shadow-xl shadow-slate-400 rounded-3xl'>
+		<div className='main my-10 w-full'>
+			<div className='form-container m-auto flex flex-col justify-between items-center lg:w-1/3 w-full -z-40 bg-slate-100 shadow-xl shadow-slate-400 rounded-3xl'>
 				<div className='mx-auto w-full text-center mt-10'>
 					<img src='/court-finder-icon-big.jpg' className='rounded-full mx-auto my-4' width={70} />
 					<div className='mx-auto text-2xl font-mono'>Central de Canchas</div>

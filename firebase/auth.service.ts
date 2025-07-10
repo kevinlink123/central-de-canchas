@@ -36,14 +36,16 @@ class AuthService {
         try {
             const user = await createUserWithEmailAndPassword(this.auth, email, password);
 
-            const newDocRef = await setDoc(doc(db, 'users', user.user.uid), {
+            //TODO: Hacer que el username sea el id unequivoco del documento mirror de users
+            const newUserData: UserData = {
                 id: user.user.uid,
                 username: username,
                 email: email,
                 registeredCourts: [],
                 favoriteCourts: [],
                 roles: [],
-            });
+            }
+            const newDocRef = await setDoc(doc(db, 'users', user.user.uid), newUserData);
 
             console.log('usuario registrado con ID: ', user.user.uid);
             console.log(user.user);
@@ -80,6 +82,7 @@ class AuthService {
             return userData;
         } catch (e: any) {
             console.log(e.code);
+            //TODO: ESTO ES DE HDP CORREGILO FORRO!!!!!
             return {} as UserData;
         }
     }
