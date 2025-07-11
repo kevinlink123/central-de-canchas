@@ -10,7 +10,7 @@ export default function MainLayout({ children }: any) {
                 <link rel="icon" href="/favicon.ico" />
             </Head>
             <NavBar />
-            <main className='mx-auto min-h-screen'>{children}</main>
+            <main className='mx-auto'>{children}</main>
             <footer className='w-full bg-black'>
                 <div className='flex items-center h-20 mx-4 text-slate-400'>
                     <div className='w-1/3'>
