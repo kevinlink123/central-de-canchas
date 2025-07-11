@@ -70,7 +70,7 @@ export default function NavBar() {
                         />
                     </div>
                     :
-                    <div className='user-account-buttons flex flex-row justify-end  w-1/3'>
+                    <div className='user-account-buttons flex gap-4 justify-end items-center pr-4 w-1/3'>
                         {user ?
                             <UserActionButtons></UserActionButtons> :
                             <CredentialButtons></CredentialButtons>
