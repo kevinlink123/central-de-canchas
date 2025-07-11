@@ -5,7 +5,11 @@
 @import url('https://fonts.googleapis.com/css2?family=Inspiration&display=swap');
 
 body {
-    height: 100vh;
+    min-height: 100vh;
+}
+
+main {
+    min-height: 100vh;
 }
 
 .bar {
