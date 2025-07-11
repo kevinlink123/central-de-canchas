@@ -36,14 +36,16 @@ class AuthService {
         try {
             const user = await createUserWithEmailAndPassword(this.auth, email, password);
 
-            const newDocRef = await setDoc(doc(db, 'users', user.user.uid), {
+            //TODO: Use the username as an unique ID to avoid multiple accounts with the same username
+            const newUserData: UserData = {
                 id: user.user.uid,
                 username: username,
                 email: email,
                 registeredCourts: [],
                 favoriteCourts: [],
                 roles: [],
-            });
+            }
+            const newDocRef = await setDoc(doc(db, 'users', user.user.uid), newUserData);
 
             console.log('usuario registrado con ID: ', user.user.uid);
             console.log(user.user);
@@ -80,6 +82,7 @@ class AuthService {
             return userData;
         } catch (e: any) {
             console.log(e.code);
+            //TODO: Change the way the user is returned on a error catch
             return {} as UserData;
         }
     }
