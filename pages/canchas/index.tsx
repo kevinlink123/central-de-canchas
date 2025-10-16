@@ -1,19 +1,15 @@
-import React, {
-    ChangeEvent,
-    ReactElement,
-    useContext,
-    useEffect,
-    useState,
-} from "react";
+import React, { useContext, useEffect, useState } from "react";
+import { Grid } from "gridjs-react";
+import "gridjs/dist/theme/mermaid.css";
+
 import markerService from "../../firebase/marker.service";
 import { MarkerDataInterface } from "../../types/Map.interface";
 import {
     CourtsTableData,
     PaginatedCourtsData,
 } from "../../types/CourtsData.interface";
-import { v4 as uuidv4 } from "uuid";
 import { DocumentData, QueryDocumentSnapshot } from "firebase/firestore";
-import { Headers } from "../../constans/tableHeaders.constant";
+import { Headers as HEADERS } from "../../constans/tableHeaders.constant";
 import ModalWithOptions from "../../components/ModalWithOptions";
 import Modal from "../../components/Modal";
 import { AuthContext } from "../../contexts/AuthContext";
@@ -22,7 +18,7 @@ export default function canchas() {
     const { user, loading } = useContext(AuthContext);
 
     const [courtsData, setCourtsData] = useState<CourtsTableData[]>([]);
-    const [headers, setHeaders] = useState<string[]>([]);
+    const [columns, setColumns] = useState<{ id: string; name: string }[]>();
     const [lastCourtCalled, setLastCourtCalled] =
         useState<QueryDocumentSnapshot<DocumentData> | null>(null);
 
@@ -45,8 +41,16 @@ export default function canchas() {
             setCourtsData(courtsTableData.courtsData);
             setLastCourtCalled(courtsTableData.lastCourtCalled);
 
-            const headersArray = Object.keys(courtsTableData.courtsData[0]);
-            setHeaders(headersArray);
+            const headers = Object.keys(courtsTableData.courtsData[0]);
+            const computedColumns = headers.map((header) => {
+                return {
+                    id: header,
+                    name: HEADERS[header as keyof typeof HEADERS],
+                    width: "150px",
+                };
+            });
+
+            setColumns(computedColumns);
         };
         fetchCourtsData();
     }, []);
@@ -133,97 +137,31 @@ export default function canchas() {
     );
 
     return (
-        <div className="w-full min-h-screen overflow-x-auto">
-            {courtsData.length ? null : (
-                <div className="flex justify-center items-center w-full h-screen">
-                    {loadingIcon}
-                </div>
-            )}
-            <div
-                className={`main-grid min-h-full w-[250%] lg:w-full grid grid-rows-[repeat(${
-                    courtsData.length + 2
-                },_minmax(0,_1fr))]`}
-            >
-                <div className="headers w-full grid grid-cols-[repeat(10,_minmax(0,_1fr))] text-[12px] lg:text-base">
-                    {headers.map((header: string) => {
-                        return (
-                            <div
-                                key={uuidv4()}
-                                className="single-header flex justify-center items-center py-1 text-center bg-gray-200 border border-gray-300 font-basketball tracking-widest"
-                            >
-                                {Headers[header as keyof typeof Headers]}
-                            </div>
-                        );
-                    })}
-                    <div
-                        key={uuidv4()}
-                        className="single-header flex justify-center items-center py-1 text-center bg-gray-200 border border-gray-300 font-basketball tracking-widest"
+        <>
+            <div className="flex flex-col max-w-full overflow-scroll lg:mx-12">
+                <Grid
+                    //@ts-ignore
+                    data={courtsData}
+                    columns={columns}
+                    search={true}
+                    pagination={{
+                        limit: 5,
+                    }}
+                    autoWidth={false}
+                    className={{
+                        container: "",
+                        tbody: "h-[500px]"
+                    }}
+                />
+                <div className="flex justify-center items-center">
+                    <button
+                        onClick={loadMoreCourts}
+                        disabled={loadingData || !lastCourtCalled}
+                        className="cursor-pointer px-4 py-4 my-4 rounded-3xl shadow shadow-slate-600 hover:bg-slate-200 active:bg-slate-300 disabled:cursor-not-allowed disabled:hover:bg-inherit disabled:active:bg-inherit disabled:text-gray-100"
                     >
-                        acciones
-                    </div>
+                        LOAD MORE
+                    </button>
                 </div>
-                {courtsData.map((singleCourtData, index) => {
-                    const dataRow = [];
-                    for (let key in singleCourtData) {
-                        dataRow.push(
-                            <div
-                                key={uuidv4()}
-                                className="single-cell flex justify-center items-center text-center py-4 px-2 border"
-                            >
-                                {singleCourtData[key as keyof CourtsTableData]}
-                            </div>
-                        );
-                    }
-                    dataRow.push(
-                        <div
-                            id={singleCourtData.courtName}
-                            key={index}
-                            className="single-cell flex justify-center items-center text-center py-4 px-2 border"
-                        >
-                            <button
-                            onClick={(e) => {
-                                if (!user) {
-                                    setModalMessage(
-                                        "Tenés que estar logueado para realizar cualquier acción"
-                                    );
-                                    setError(true);
-                                    return;
-                                }
-                                setAboutToDeleteCourt({
-                                    index: index,
-                                    courtName: e.currentTarget.parentElement!.id,
-                                });
-                                setIsModalOpen(true);
-                            }}
-                            >
-                                {deleteIcon}
-                            </button>
-                        </div>
-                    );
-                    return (
-                        <div
-                            key={uuidv4()}
-                            className="row w-full grid grid-cols-[repeat(10,_minmax(0,_1fr))] text-[12px] lg:text-base"
-                        >
-                            {dataRow}
-                        </div>
-                    );
-                })}
-                {!courtsData.length ? null : loadingData ? (
-                    <div className="flex justify-center items-center my-4">
-                        {loadingIcon}
-                    </div>
-                ) : (
-                    <div className="footer-container flex justify-center items-center my-4 bg-gray rounded-b-[50px]">
-                        <button
-                            disabled={!lastCourtCalled}
-                            onClick={loadMoreCourts}
-                            className="px-4 py-4 border rounded-3xl cursor-pointer disabled:text-gray-200 disabled:cursor-not-allowed"
-                        >
-                            CARGAR MÁS
-                        </button>
-                    </div>
-                )}
             </div>
             {isModalOpen && (
                 <ModalWithOptions
@@ -244,6 +182,6 @@ export default function canchas() {
                     closeModal={() => setError(false)}
                 />
             )}
-        </div>
+        </>
     );
 }

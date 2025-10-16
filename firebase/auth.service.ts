@@ -71,13 +71,14 @@ class AuthService {
         try {
             const q = query(collection(db, 'users'), where(documentId(), '==', profileId));
             const docSnapshot = await getDocs(q);
-            const { id, email, registeredCourts, roles, username } = docSnapshot.docs[0].data();
+            const { id, email, registeredCourts, roles, username, favoriteCourts } = docSnapshot.docs[0].data();
             const userData = {
                 id,
                 email,
                 registeredCourts,
                 roles,
-                username
+                username,
+                favoriteCourts
             }
             return userData;
         } catch (e: any) {
